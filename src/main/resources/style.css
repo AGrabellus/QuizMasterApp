@@ -1,0 +1,145 @@
+/* Das entspricht deinem html, body aus Angular und färbt das komplette Fenster */
+
+/* Verhindert, dass die ScrollPane einen weißen Hintergrund reinschmuggelt */
+.root {
+    -fx-font-size: 1.15em;
+}
+
+.scroll-pane, .scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.main-title {
+    -fx-font-size: 2.5em;
+    -fx-fill: #f1f8ff;
+    -fx-font-weight: bold;
+}
+
+.subtitle {
+    -fx-font-size: 1.1em;
+    -fx-fill: #cfe8ff;
+}
+
+.section-heading {
+    -fx-font-size: 2em;
+    -fx-fill: #f1f8ff;
+    -fx-font-weight: bold;
+}
+
+/* Die Boxen erhalten den transparenten Glas-Effekt aus deinem Angular-CSS */
+.box {
+    -fx-border-color: rgba(79, 184, 113, 0.2);
+    -fx-border-width: 1;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-background-color: linear-gradient(from 0% 0% to 0% 100%, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    -fx-padding: 15;
+}
+
+.box-title {
+    -fx-font-size: 1.3em;
+    -fx-fill: #e6eef8;
+    -fx-font-weight: bold;
+}
+
+.info-icon {
+    -fx-border-color: rgba(79, 184, 113, 0.35);
+    -fx-border-width: 1;
+    -fx-border-radius: 999;
+    -fx-background-radius: 999;
+    -fx-fill: #cfe8ff;
+    -fx-font-size: 0.8em;
+    -fx-font-weight: bold;
+}
+
+.resource-item {
+    -fx-background-color: rgba(255,255,255,0.02);
+    -fx-background-radius: 8;
+    -fx-padding: 10;
+}
+
+.resource-name {
+    -fx-font-weight: bold;
+    -fx-fill: #e6eef8;
+    -fx-font-size: 1em;
+}
+
+.load-btn {
+    -fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #4fb871, #3d9659);
+    -fx-text-fill: #fff;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-padding: 6 12 6 12;
+    -fx-cursor: hand;
+}
+
+.empty-message {
+    -fx-fill: #999999;
+    -fx-font-style: italic;
+}
+
+/* In style.css ergänzen */
+.extra-apps-container {
+    -fx-padding: 20 0 40 0; /* Oben, Rechts, Unten, Links */
+}
+
+.dice-btn {
+    -fx-padding: 15 30 15 30;
+    -fx-background-color: rgba(255, 255, 255, 0.02);
+    -fx-border-color: rgba(79, 184, 113, 0.2);
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-text-fill: #e6eef8;
+    -fx-font-size: 1.2em;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+.dice-btn:hover {
+    -fx-border-color: rgba(79, 184, 113, 0.4);
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+}
+
+.result-box {
+    -fx-background-color: rgba(255, 255, 255, 0.02);
+    -fx-border-color: rgba(79, 184, 113, 0.2);
+    -fx-border-width: 1;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+}
+
+.result-title {
+    -fx-fill: #4fb871;
+    -fx-font-size: 1.5em;
+    -fx-font-weight: bold;
+}
+
+/* Anklickbar-Quiz */
+.anklickbar-page {
+    -fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #081122 0%, #0b1624 100%);
+}
+.quiz-title { -fx-text-fill: #f1f8ff; -fx-font-size: 1.5em; -fx-font-weight: bold; }
+.quiz-filename, .state-detail { -fx-text-fill: #cfe8ff; }
+.stats-section, .question-section, .answers-section, .state-card, .results-container {
+    -fx-background-color: rgba(255,255,255,0.02); -fx-border-color: rgba(255,255,255,0.08);
+    -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 16;
+}
+.stat-label { -fx-text-fill: #999; -fx-font-size: 0.85em; }
+.stat-value { -fx-text-fill: #f1f8ff; -fx-font-size: 1.5em; -fx-font-weight: bold; }
+.state-title, .question-text, .answers-title { -fx-text-fill: #f1f8ff; -fx-font-weight: bold; }
+.state-title, .question-text { -fx-font-size: 1.8em; }
+.start-btn, .nav-btn, .back-btn { -fx-cursor: hand; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-radius: 8; }
+.start-btn, .nav-btn { -fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #2b6cb0, #1e4fa0); }
+.start-btn, .back-btn { -fx-padding: 10 24; }
+.nav-btn { -fx-padding: 6 12; }
+.back-btn { -fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #4fb871, #3d9659); }
+.question-counter { -fx-text-fill: #cfe8ff; }
+.answer-btn { -fx-cursor: hand; -fx-background-color: rgba(255,255,255,0.04); -fx-border-color: rgba(255,255,255,0.10); -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 12 18; }
+.answer-btn:hover { -fx-background-color: rgba(255,255,255,0.08); }
+.answer-btn.correct { -fx-background-color: rgba(79,184,113,0.35); -fx-border-color: rgba(79,184,113,0.5); }
+.answer-text { -fx-text-fill: #e6eef8; -fx-font-size: 1em; }
+.wrong-effect { -fx-background-color: rgba(255,100,100,0.12); -fx-border-color: rgba(255,100,100,0.35); }
+.finished-title { -fx-text-fill: #4fb871; -fx-font-size: 2em; -fx-font-weight: bold; }
+.result-item { -fx-text-fill: #cfe8ff; -fx-font-size: 1.15em; -fx-alignment: center; -fx-text-alignment: center; -fx-padding: 10; -fx-border-color: rgba(79,184,113,0.2); -fx-border-radius: 6; }
+.quiz-error { -fx-text-fill: #ffaaaa; -fx-font-size: 1.1em; }
+.audio-btn { -fx-cursor: hand; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-padding: 8 14; -fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #2b6cb0, #1e4fa0); }
