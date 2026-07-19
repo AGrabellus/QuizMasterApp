@@ -90,32 +90,29 @@ public class HomeView extends ScrollPane {
         VBox quizMakerSection = new VBox(10, quizMakerDivider, quizMakerHeading);
         quizMakerSection.setAlignment(Pos.CENTER);
 
-//        HBox quizMakerApps = new HBox(20,
-//                createSimpleAppBox("Anklickbar-QuizMaker", () -> System.out.println("Starte QuizMaker Anklickbar")),
-//                createSimpleAppBox("Smart10-QuizMaker", () -> System.out.println("Starte QuizMaker Smart10")),
-//                createSimpleAppBox("Memory-QuizMaker", () -> System.out.println("Starte QuizMaker Memory")));
-//        quizMakerApps.setAlignment(Pos.TOP_CENTER);
-
-
         // NEU: Button zum Erstellen eines Anklickbar-Quiz unter den Boxen
         Button createAnklickbarBtn = new Button("➕ Anklickbar-Quiz erstellen");
         createAnklickbarBtn.getStyleClass().add("load-btn");
         createAnklickbarBtn.setStyle("-fx-font-size: 1.1em; -fx-padding: 10 20 10 20;"); // Etwas größer stylen
-        createAnklickbarBtn.setOnAction(e -> primaryStage.getScene().setRoot(new AnklickbarErstellenView(primaryStage)));
+        createAnklickbarBtn.setOnAction(e -> {
+            File base = lastLoadedFolder != null ? lastLoadedFolder : DEFAULT_QUIZ_FOLDER;
+            primaryStage.getScene().setRoot(new AnklickbarErstellenView(primaryStage, base));
+        });
 
-        // NEU: Button zum Erstellen eines Smart10-Quiz unter den Boxen
-        Button createSmartTenBtn = new Button("➕ SmartTen-Quiz erstellen");
-        createSmartTenBtn.getStyleClass().add("load-btn");
-        createSmartTenBtn.setStyle("-fx-font-size: 1.1em; -fx-padding: 10 20 10 20;"); // Etwas größer stylen
-        createSmartTenBtn.setOnAction(e -> primaryStage.getScene().setRoot(new SmartTenErstellenView(primaryStage)));
-        
-        // NEU: Button zum Erstellen eines Memory-Quiz unter den Boxen
-        Button createMemoryBtn = new Button("➕ Memory-Quiz erstellen");
-        createMemoryBtn.getStyleClass().add("load-btn");
-        createMemoryBtn.setStyle("-fx-font-size: 1.1em; -fx-padding: 10 20 10 20;"); // Etwas größer stylen
-        createMemoryBtn.setOnAction(e -> primaryStage.getScene().setRoot(new MemoryErstellenView(primaryStage)));
+//        // NEU: Button zum Erstellen eines Smart10-Quiz unter den Boxen
+//        Button createSmartTenBtn = new Button("➕ SmartTen-Quiz erstellen");
+//        createSmartTenBtn.getStyleClass().add("load-btn");
+//        createSmartTenBtn.setStyle("-fx-font-size: 1.1em; -fx-padding: 10 20 10 20;"); // Etwas größer stylen
+//        createSmartTenBtn.setOnAction(e -> primaryStage.getScene().setRoot(new SmartTenErstellenView(primaryStage)));
+//
+//        // NEU: Button zum Erstellen eines Memory-Quiz unter den Boxen
+//        Button createMemoryBtn = new Button("➕ Memory-Quiz erstellen");
+//        createMemoryBtn.getStyleClass().add("load-btn");
+//        createMemoryBtn.setStyle("-fx-font-size: 1.1em; -fx-padding: 10 20 10 20;"); // Etwas größer stylen
+//        createMemoryBtn.setOnAction(e -> primaryStage.getScene().setRoot(new MemoryErstellenView(primaryStage)));
 
-        VBox actionArea = new VBox(createAnklickbarBtn,createSmartTenBtn,createMemoryBtn);
+        VBox actionArea = new VBox(createAnklickbarBtn);
+//        VBox actionArea = new VBox(createAnklickbarBtn,createSmartTenBtn,createMemoryBtn);
         actionArea.setAlignment(Pos.CENTER);
         actionArea.setSpacing(10);
         actionArea.setPadding(new javafx.geometry.Insets(10, 10, 10, 10));
@@ -154,15 +151,6 @@ public class HomeView extends ScrollPane {
         }
     }
 
-    private void openQuizMaker(int variante){
-        if (variante==1){
-            primaryStage.getScene().setRoot(new AnklickbarErstellenView(primaryStage));
-        } else if (variante==2) {
-            primaryStage.getScene().setRoot(new SmartTenErstellenView(primaryStage));
-        } else if (variante==3) {
-            primaryStage.getScene().setRoot(new MemoryErstellenView(primaryStage));
-        }
-    }
 
     private VBox createQuizBox(String titleText, String tooltipText, VBox contentTarget) {
         VBox box = new VBox();
