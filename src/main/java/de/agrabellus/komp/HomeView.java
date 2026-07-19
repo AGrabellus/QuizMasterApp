@@ -90,21 +90,20 @@ public class HomeView extends ScrollPane {
         VBox quizMakerSection = new VBox(10, quizMakerDivider, quizMakerHeading);
         quizMakerSection.setAlignment(Pos.CENTER);
 
-        HBox quizMakerApps = new HBox(20,
-                createSimpleAppBox("Anklickbar-QuizMaker", () -> System.out.println("Starte QuizMaker Anklickbar")),
-                createSimpleAppBox("Smart10-QuizMaker", () -> System.out.println("Starte QuizMaker Smart10")),
-                createSimpleAppBox("Memory-QuizMaker", () -> System.out.println("Starte QuizMaker Memory")));
-        quizMakerApps.setAlignment(Pos.TOP_CENTER);
+//        HBox quizMakerApps = new HBox(20,
+//                createSimpleAppBox("Anklickbar-QuizMaker", () -> System.out.println("Starte QuizMaker Anklickbar")),
+//                createSimpleAppBox("Smart10-QuizMaker", () -> System.out.println("Starte QuizMaker Smart10")),
+//                createSimpleAppBox("Memory-QuizMaker", () -> System.out.println("Starte QuizMaker Memory")));
+//        quizMakerApps.setAlignment(Pos.TOP_CENTER);
 
 
-        // NEU: Button zum Erstellen eines Memory-Quiz unter den Boxen
+        // NEU: Button zum Erstellen eines Anklickbar-Quiz unter den Boxen
         Button createAnklickbarBtn = new Button("➕ Anklickbar-Quiz erstellen");
         createAnklickbarBtn.getStyleClass().add("load-btn");
         createAnklickbarBtn.setStyle("-fx-font-size: 1.1em; -fx-padding: 10 20 10 20;"); // Etwas größer stylen
         createAnklickbarBtn.setOnAction(e -> primaryStage.getScene().setRoot(new AnklickbarErstellenView(primaryStage)));
 
-
-        // NEU: Button zum Erstellen eines Memory-Quiz unter den Boxen
+        // NEU: Button zum Erstellen eines Smart10-Quiz unter den Boxen
         Button createSmartTenBtn = new Button("➕ SmartTen-Quiz erstellen");
         createSmartTenBtn.getStyleClass().add("load-btn");
         createSmartTenBtn.setStyle("-fx-font-size: 1.1em; -fx-padding: 10 20 10 20;"); // Etwas größer stylen
@@ -116,9 +115,10 @@ public class HomeView extends ScrollPane {
         createMemoryBtn.setStyle("-fx-font-size: 1.1em; -fx-padding: 10 20 10 20;"); // Etwas größer stylen
         createMemoryBtn.setOnAction(e -> primaryStage.getScene().setRoot(new MemoryErstellenView(primaryStage)));
 
-        VBox actionArea = new VBox(createMemoryBtn);
+        VBox actionArea = new VBox(createAnklickbarBtn,createSmartTenBtn,createMemoryBtn);
         actionArea.setAlignment(Pos.CENTER);
-        actionArea.setPadding(new javafx.geometry.Insets(10, 0, 10, 0));
+        actionArea.setSpacing(10);
+        actionArea.setPadding(new javafx.geometry.Insets(10, 10, 10, 10));
 
         // Trennlinie für weitere Apps
         Line divider = new Line(0, 0, 800, 0);
@@ -144,13 +144,23 @@ public class HomeView extends ScrollPane {
         });
 
         // Alles zusammenbauen
-        rootContainer.getChildren().addAll(header, pickerBox, boxesContainer, quizMakerSection, quizMakerApps,
+        rootContainer.getChildren().addAll(header, pickerBox, boxesContainer, quizMakerSection, actionArea,
                 dividerSection, extraAppsContainer);
         this.setContent(rootContainer);
 
         File initialFolder = lastLoadedFolder != null ? lastLoadedFolder : DEFAULT_QUIZ_FOLDER;
         if (initialFolder.isDirectory()) {
             ladeOrdner(initialFolder);
+        }
+    }
+
+    private void openQuizMaker(int variante){
+        if (variante==1){
+            primaryStage.getScene().setRoot(new AnklickbarErstellenView(primaryStage));
+        } else if (variante==2) {
+            primaryStage.getScene().setRoot(new SmartTenErstellenView(primaryStage));
+        } else if (variante==3) {
+            primaryStage.getScene().setRoot(new MemoryErstellenView(primaryStage));
         }
     }
 
@@ -285,13 +295,13 @@ public class HomeView extends ScrollPane {
     // Navigations-Methoden (Ähnlich wie Angular Router)
     private void openQuiz(String dateiName) {
         String lower = dateiName.toLowerCase();
+        File quizFile = loadedFolder == null ? new File(dateiName) : new File(loadedFolder, dateiName);
         if (lower.startsWith("anklickbar")) {
-            File quizFile = loadedFolder == null ? new File(dateiName) : new File(loadedFolder, dateiName);
             primaryStage.getScene().setRoot(new AnklickbarView(primaryStage, dateiName, quizFile));
         } else if (lower.startsWith("smart10")) {
             primaryStage.getScene().setRoot(new SmartTenView(primaryStage, dateiName));
         } else if (lower.startsWith("memory")) {
-            primaryStage.getScene().setRoot(new MemoryView(primaryStage, dateiName));
+            primaryStage.getScene().setRoot(new MemoryView(primaryStage, dateiName, quizFile)); // <-- Hier quizFile ergänzen
         }
     }
 

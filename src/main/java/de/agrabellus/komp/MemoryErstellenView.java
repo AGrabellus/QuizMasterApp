@@ -25,6 +25,9 @@ public class MemoryErstellenView extends VBox {
         Text info = new Text("Hier kannst du eigene Paare definieren und als Quiz exportieren.");
         info.setStyle("-fx-fill: #cfe8ff; -fx-font-size: 1.1em;");
 
-        this.getChildren().addAll(backBtn, title, info);
+        Text subinfo = new Text("Es sind auch Bilder möglich, dafür bitte das den Namen mit Endung angeben.");
+        subinfo.setStyle("-fx-fill: #cfe8ff; -fx-font-size: 1.1em;");
+
+        this.getChildren().addAll(backBtn, title, info, subinfo);
     }
 }
