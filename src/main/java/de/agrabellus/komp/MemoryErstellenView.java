@@ -32,6 +32,8 @@ public class MemoryErstellenView extends VBox {
     private HBox actionArea;
     private Text statusText;
 
+    private int anzZeilen=0;
+
     public MemoryErstellenView(Stage primaryStage, File baseFolder) {
         this.primaryStage = primaryStage;
         this.baseFolder = baseFolder;
@@ -179,6 +181,9 @@ public class MemoryErstellenView extends VBox {
         HBox row = new HBox(10);
         row.setAlignment(Pos.CENTER);
 
+        Text zeilenNummer = new Text();
+        zeilenNummer.setStyle("-fx-fill: white; -fx-font-weight: bold;");
+
         TextField frageFeld = new TextField(frage);
         frageFeld.setPromptText("Frage...");
         frageFeld.setPrefWidth(300);
@@ -189,10 +194,35 @@ public class MemoryErstellenView extends VBox {
 
         Button deleteBtn = new Button("🗑");
         deleteBtn.setStyle("-fx-background-color: #ef4444; -fx-text-fill: white;");
-        deleteBtn.setOnAction(e -> rowsContainer.getChildren().remove(row));
+        deleteBtn.setOnAction(e -> {
+            rowsContainer.getChildren().remove(row);
+            // Nach dem Löschen alle Zeilennummern neu durchnummerieren
+            updateRowNumbers();
+        });
 
-        row.getChildren().addAll(frageFeld, antwortFeld, deleteBtn);
+        // Reihenfolge in der HBox: Index 0 = Nummer, Index 1 = Frage, Index 2 = Antwort, Index 3 = Button
+        row.getChildren().addAll(zeilenNummer, frageFeld, antwortFeld, deleteBtn);
         rowsContainer.getChildren().add(row);
+
+        // Nummern nach dem Hinzufügen aktualisieren
+        updateRowNumbers();
+    }
+
+    /**
+     * Geht alle Zeilen durch und nummeriert sie von 1 bis N neu durch.
+     */
+    private void updateRowNumbers() {
+        int index = 1;
+        for (Node node : rowsContainer.getChildren()) {
+            if (node instanceof HBox) {
+                HBox row = (HBox) node;
+                // Index 0 ist der Zeilennummern-Text
+                Text zeilenNummer = (Text) row.getChildren().get(0);
+                zeilenNummer.setText(index + ".");
+                index++;
+            }
+        }
+        this.anzZeilen = rowsContainer.getChildren().size();
     }
 
     /**
@@ -205,8 +235,13 @@ public class MemoryErstellenView extends VBox {
         for (Node node : rowsContainer.getChildren()) {
             if (node instanceof HBox) {
                 HBox row = (HBox) node;
-                TextField frageFeld = (TextField) row.getChildren().get(0);
-                TextField antwortFeld = (TextField) row.getChildren().get(1);
+
+                // WICHTIG: Durch das Zeilennummer-Textfeld haben sich die Indizes verschoben!
+                // Index 0 = Text (Zeilennummer)
+                // Index 1 = TextField (Frage)
+                // Index 2 = TextField (Antwort)
+                TextField frageFeld = (TextField) row.getChildren().get(1);
+                TextField antwortFeld = (TextField) row.getChildren().get(2);
 
                 String frage = frageFeld.getText().trim();
                 String antwort = antwortFeld.getText().trim();
