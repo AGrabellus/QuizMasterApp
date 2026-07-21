@@ -99,20 +99,25 @@ public class HomeView extends ScrollPane {
             primaryStage.getScene().setRoot(new AnklickbarErstellenView(primaryStage, base));
         });
 
-//        // NEU: Button zum Erstellen eines Smart10-Quiz unter den Boxen
-//        Button createSmartTenBtn = new Button("➕ SmartTen-Quiz erstellen");
-//        createSmartTenBtn.getStyleClass().add("load-btn");
-//        createSmartTenBtn.setStyle("-fx-font-size: 1.1em; -fx-padding: 10 20 10 20;"); // Etwas größer stylen
-//        createSmartTenBtn.setOnAction(e -> primaryStage.getScene().setRoot(new SmartTenErstellenView(primaryStage)));
-//
-//        // NEU: Button zum Erstellen eines Memory-Quiz unter den Boxen
-//        Button createMemoryBtn = new Button("➕ Memory-Quiz erstellen");
-//        createMemoryBtn.getStyleClass().add("load-btn");
-//        createMemoryBtn.setStyle("-fx-font-size: 1.1em; -fx-padding: 10 20 10 20;"); // Etwas größer stylen
-//        createMemoryBtn.setOnAction(e -> primaryStage.getScene().setRoot(new MemoryErstellenView(primaryStage)));
+        // NEU: Button zum Erstellen eines Smart10-Quiz unter den Boxen
+        Button createSmartTenBtn = new Button("➕ SmartTen-Quiz erstellen");
+        createSmartTenBtn.getStyleClass().add("load-btn");
+        createSmartTenBtn.setStyle("-fx-font-size: 1.1em; -fx-padding: 10 20 10 20;"); // Etwas größer stylen
+        createSmartTenBtn.setOnAction(e -> {
+            File base = lastLoadedFolder != null ? lastLoadedFolder : DEFAULT_QUIZ_FOLDER;
+            primaryStage.getScene().setRoot(new SmartTenErstellenView(primaryStage, base));
+        });
 
-        VBox actionArea = new VBox(createAnklickbarBtn);
-//        VBox actionArea = new VBox(createAnklickbarBtn,createSmartTenBtn,createMemoryBtn);
+        // NEU: Button zum Erstellen eines Memory-Quiz unter den Boxen
+        Button createMemoryBtn = new Button("➕ Memory-Quiz erstellen");
+        createMemoryBtn.getStyleClass().add("load-btn");
+        createMemoryBtn.setStyle("-fx-font-size: 1.1em; -fx-padding: 10 20 10 20;"); // Etwas größer stylen
+        createMemoryBtn.setOnAction(e -> {
+            File base = lastLoadedFolder != null ? lastLoadedFolder : DEFAULT_QUIZ_FOLDER;
+            primaryStage.getScene().setRoot(new MemoryErstellenView(primaryStage, base));
+        });
+
+        VBox actionArea = new VBox(createAnklickbarBtn,createSmartTenBtn,createMemoryBtn);
         actionArea.setAlignment(Pos.CENTER);
         actionArea.setSpacing(10);
         actionArea.setPadding(new javafx.geometry.Insets(10, 10, 10, 10));
