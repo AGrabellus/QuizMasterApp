@@ -49,7 +49,13 @@ public class MemoryView extends VBox {
     public MemoryView(Stage stage, String dateiName, File quizFile) {
         this.quizFile = quizFile;
         if (quizFile != null) {
-            this.folder = quizFile.getParentFile();
+            // Name der Datei ohne Dateiendung ermitteln (z.B. "Pokemon.txt" -> "Pokemon")
+            String fileName = quizFile.getName();
+            int lastDot = fileName.lastIndexOf('.');
+            String folderName = (lastDot > 0) ? fileName.substring(0, lastDot) : fileName;
+
+            // Ordner auf den Unterordner setzen: C:\QuizMasterApp\memory\{QuizName}\
+            this.folder = new File(quizFile.getParentFile(), folderName);
         }
 
         // CSS Style-Anleihen (Dunkles Theme)
@@ -112,10 +118,16 @@ public class MemoryView extends VBox {
     }
 
     private boolean isImageValue(String value) {
+        if (value == null) return false;
         String normalized = value.trim().toLowerCase();
-        return normalized.matches(".*\\.(png|jpe?g|webp|gif|bmp|svg|ico|tiff?|avif)$")
-                || normalized.startsWith("data:image/")
-                || normalized.startsWith("http");
+
+        // Prüfe auf direkte Protokolle
+        if (normalized.startsWith("http://") || normalized.startsWith("https://") || normalized.startsWith("data:image/")) {
+            return true;
+        }
+
+        // Prüfe auf typische Bild-Endungen (auch wenn relativer Pfad wie "images/pic.png")
+        return normalized.matches(".*\\.(png|jpe?g|webp|gif|bmp|svg|ico|tiff?|avif)$");
     }
 
     private void initializeGame() {
@@ -388,22 +400,48 @@ public class MemoryView extends VBox {
             imgView.setFitWidth(100);
             imgView.setFitHeight(100);
             imgView.setPreserveRatio(true);
+
             try {
-                String url = card.content;
-                if (!url.toLowerCase().startsWith("http")) {
-                    File imgFile = new File(folder, url);
-                    url = imgFile.toURI().toString();
+                String path = card.content.trim();
+                String imageUrl;
+
+                if (path.toLowerCase().startsWith("http://") || path.toLowerCase().startsWith("https://") || path.toLowerCase().startsWith("data:image/")) {
+                    imageUrl = path;
+                } else {
+                    // Datei-Pfad auflösen
+                    File imgFile = new File(path);
+
+                    // Falls es ein relativer Pfad ist und ein Ordner bekannt ist:
+                    if (!imgFile.isAbsolute() && folder != null) {
+                        imgFile = new File(folder, path);
+                    }
+
+                    imageUrl = imgFile.toURI().toString();
                 }
-                imgView.setImage(new Image(url, true));
+
+                // 'backgroundLoading = true' verhindert Ruckler beim Aufdecken
+                Image img = new Image(imageUrl, true);
+
+                // Error-Listener für klares Debugging
+                img.exceptionProperty().addListener((obs, oldEx, newEx) -> {
+                    if (newEx != null) {
+                        System.err.println("Fehler beim Laden des Bildes (" + imageUrl + "): " + newEx.getMessage());
+                    }
+                });
+
+                imgView.setImage(img);
+                frontContent = imgView;
             } catch (Exception e) {
-                frontContent = new Text("Bild Fehler");
+                System.err.println("Fehler bei Bild-URI Erstellung: " + e.getMessage());
+                Text errText = new Text("Bild-Fehler");
+                errText.setStyle("-fx-fill: #ff6464; -fx-font-size: 11px;");
+                frontContent = errText;
             }
-            frontContent = imgView;
         } else {
             Text text = new Text(card.content);
             text.setWrappingWidth(100);
             text.setTextAlignment(TextAlignment.CENTER);
-            text.setStyle("-fx-font-size: 14px; -fx-fill: white; -fx-font-weight: bold;"); // Heller Text
+            text.setStyle("-fx-font-size: 14px; -fx-fill: white; -fx-font-weight: bold;");
             frontContent = text;
         }
 
